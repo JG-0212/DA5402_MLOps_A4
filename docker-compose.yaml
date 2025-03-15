@@ -3,7 +3,11 @@ services:
     image: postgres:latest
     env_file:
       - ./postgres/pg_env.env
+    # volumes:
+    #   - db_data:/var/lib/postgresql/data
     restart: "no"
+    logging:
+      driver: none
     
   db_initer:
     image: postgres:latest
@@ -13,7 +17,7 @@ services:
       - ./db_initer/db_env.env
     volumes:
       - ./db_initer:/db_initer
-    command: /bin/sh -c 'chmod +x /db_initer/cust_ep.sh && /db_initer/cust_ep.sh' 
+    command: /bin/sh -c 'chmod +x /db_initer/executer.sh && /db_initer/executer.sh' 
   
   rss_retriever:
     depends_on:
@@ -25,3 +29,16 @@ services:
     env_file:
       - ./rss_retriever/rss_env.env
       - ./rss_retriever/db_env.env
+
+  brownie:
+      build: 
+        context: .
+        dockerfile: ./brownie/Dockerfile
+      ports:
+        - "7000:7000"
+      env_file:
+      - ./brownie/db_env.env
+    
+
+# volumes:
+#   db_data:

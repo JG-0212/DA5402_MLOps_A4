@@ -27,7 +27,8 @@ def add_feed_data(rss=None):
         cursor = conn.cursor()
 
         additions = 0
-
+        if posts is None:
+            print("No entries found in website ")
         for post in posts: 
             # print(post)
             temp = dict() 
@@ -41,19 +42,17 @@ def add_feed_data(rss=None):
                     # ll
                     img_url = post[os.getenv("RSS_IMAGE")][0][os.getenv("RSS_IMAGE_URL")]
                     
-                    if(len(post[os.getenv("RSS_IMAGE")])>1):
-                        print("Multiple images found")
                     img_content = requests.get(img_url)
                     temp["Picture"] = img_content.content
-                except:
-                    print("No image found")
+                except Exception as e:
+                    pass
 
                 temp["Tags"] = [tag.term for tag in  post[os.getenv("RSS_TAGS")]] 
 
                 try:
                     temp["Summary"] = post[os.getenv("RSS_SUMMARY")]
-                except:
-                    print("No summary found")
+                except Exception as e:
+                    pass
 
                 try:
                     query = "INSERT INTO news_data ({columns}) VALUES ({value_placeholders})".format(
@@ -62,18 +61,23 @@ def add_feed_data(rss=None):
                     )
 
                     cursor.execute(query, list(temp.values()))
-                    print(list(temp.values()))
-                except:
-                    print("Unable to insert")
+                    # print(list(temp.values()))
+                except Exception as e:
+                    print("Unable to insert data")
+                    print(e)
+                    conn.rollback()
 
                 additions += 1
-            except: 
+            except Exception as e: 
                 print("No items with the format found")
+                print(e)
 
         
         if additions>=1:
             conn.commit()
-            print("More than 1 news")
+            print("New news detected and added")
+        else:
+            print("No new news detected")
             
 
               
@@ -85,4 +89,4 @@ if __name__ == "__main__":
   while(True):
     feed_url = os.getenv("RSS_FEED_URL")
     add_feed_data(rss = feed_url) 
-    time.sleep(600)
+    time.sleep(os.getenv('RSS_POLL_TIME'))
