@@ -1,6 +1,6 @@
 ## Tasks overview ##
 - A common <i>postgres</i> service is run which will be used by all the other services with a <i>db_env</i> file set up for authorization.
-- The logs of this service alone are disabled to prevent unnecessary logging of 'INSERT INTO' statements.
+- The logs of this service alone are disabled to prevent unnecessary logging of 'INSERT INTO' statements but build logs are present.
 - <b>Task 1</b>:
     - A service <i>db_init</i> is created for the purpose of this task.
     - A <i>db_env</i> file is setup for accesing the <i>postgres</i> database.
