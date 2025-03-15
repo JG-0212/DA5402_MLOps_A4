@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:latest
+    env_file:
+      - ./postgres/pg_env.env
+    restart: "no"
+    
+  db_initer:
+    image: postgres:latest
+    depends_on:
+      - postgres
+    env_file:
+      - ./db_initer/db_env.env
+    volumes:
+      - ./db_initer:/db_initer
+    command: /bin/sh -c 'chmod +x /db_initer/cust_ep.sh && /db_initer/cust_ep.sh' 
+  
+  rss_retriever:
+    depends_on:
+      db_initer:
+        condition: service_completed_successfully
+    build: 
+      context: .
+      dockerfile: ./rss_retriever/Dockerfile
+    env_file:
+      - ./rss_retriever/rss_env.env
+      - ./rss_retriever/db_env.env
