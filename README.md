@@ -9,6 +9,7 @@
     - We use <i>executer.sh</i> shell script to wait for the server to get ready to accept commands(<i>depends_on</i> only cares about building).
     - We then use the same script to execute statements in <i>table.sql</i> script.
     - Primary key is enforced on <i>Title</i>. We can't enforce it on the published date because it's a timestamp now.
+    - A volume named <i>db_data</i> is mounted to have a persistent database
 - <b>Task 2</b>:
     - A python script <i>rss_parser.py</i> is executed upon startup which takes in RSS feed and inserts into database.
     - <i>feedparser</i> library is used to parse the feeds and <i>psycopg</i> library is used to connect and insert.
