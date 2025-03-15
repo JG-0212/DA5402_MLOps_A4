@@ -89,4 +89,4 @@ if __name__ == "__main__":
   while(True):
     feed_url = os.getenv("RSS_FEED_URL")
     add_feed_data(rss = feed_url) 
-    time.sleep(os.getenv('RSS_POLL_TIME'))
+    time.sleep(int(os.getenv('RSS_POLL_TIME')))

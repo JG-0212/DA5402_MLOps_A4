@@ -3,9 +3,10 @@ services:
     image: postgres:latest
     env_file:
       - ./postgres/pg_env.env
-    # volumes:
-    #   - db_data:/var/lib/postgresql/data
+    volumes:
+      - db_data:/var/lib/postgresql/data
     restart: "no"
+    command: postgres -c log_statement=none -c log_directory=/dev/null -c logging_collector=off
     logging:
       driver: none
     
@@ -38,7 +39,6 @@ services:
         - "7000:7000"
       env_file:
       - ./brownie/db_env.env
-    
 
-# volumes:
-#   db_data:
+volumes:
+  db_data:
