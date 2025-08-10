@@ -1,5 +1,5 @@
 ## Tasks overview ##
-- Refer to [this pdf](DA5402_MLOPS_A5.pdf) for the problem statement.
+- Refer to [this pdf](DA5402_MLOPS_A4.pdf) for the problem statement.
 - A common <i>postgres</i> service is run which will be used by all the other services with a <i>db_env</i> file set up for authorization.
 - The logs of this service alone are disabled to prevent unnecessary logging of 'INSERT INTO' statements but build logs are present.
 - <b>Task 1</b>:
